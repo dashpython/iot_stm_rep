@@ -50,6 +50,24 @@ api = Api(server)
 db = SQLAlchemy(server)
 
 
+@server.before_first_request
+def create_tables():
+    db.create_all()
+
+class DeviceModel(db.Model):
+    __tablename__ = 'data'
+
+    devId  = db.Column(db.String(15),primary_key=True)
+    deviceId = db.Column(db.String(15))
+    SPA = db.Column(db.Float(precision=2))
+    TA= db.Column(db.Float(precision=2))
+
+    def __init__(self,devId,deviceId,SPA,TA):
+        self.deviceId=devId
+        self.SPA= SPA
+        self.TA= TA
+
+
 def on_connect(client, userdata, flags, rc):
     print("Connected!", rc)
 
