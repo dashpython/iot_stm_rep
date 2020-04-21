@@ -71,7 +71,7 @@ def on_disconnect(client, userdata, rc):
 
 connection = sqlite3.connect('data.db',check_same_thread=False)
 cursor = connection.cursor()
- #cursor.execute("CREATE TABLE data (id INTEGER PRIMARY KEY,stamp VARCHAR(15), devId VARCHAR(15), SPA VARCHAR(15),TA VARCHAR(15) )")
+cursor.execute("CREATE TABLE IF NOT EXISTS data (id INTEGER PRIMARY KEY,stamp VARCHAR(15), devId VARCHAR(15), SPA VARCHAR(15),TA VARCHAR(15) )")
 
 n=0
 def on_message(client, userdata, message):
