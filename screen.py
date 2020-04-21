@@ -1,5 +1,4 @@
 import os 
-import os, urlparse
 import pathlib
 import requests
 import flask
