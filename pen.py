@@ -69,8 +69,9 @@ class DeviceModel(db.Model):
         self.SPA= SPA
         self.TA= TA
 
-db.session.add(DeviceModel(stamp= str(datetime.now()+ timedelta(minutes=330)), devId='R1' ,SPA= 51.85, TA=0.0 ))
+db.session.add(DeviceModel(stamp= '%s', devId= '%s' ,SPA= '%s', TA= '%s' ))
 db.session.commit()
+
 def on_connect(client, userdata, flags, rc):
     print("Connected!", rc)
 
