@@ -1,1 +1,1 @@
-web: gunicorn pen:server
+web: gunicorn success:server
