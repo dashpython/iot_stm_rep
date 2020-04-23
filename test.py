@@ -116,15 +116,15 @@ app = dash.Dash(__name__,server=server,external_stylesheets=[dbc.themes.BOOTSTRA
 
 app.config['suppress_callback_exceptions']=True
 
-def table(devices):
+def table(rows):
     #global reading
-    print("table devices=",devices)
+    
     #reading=reading+1
     table_header=[
-        html.Thead(html.Tr([html.Th('stamp'),html.Th('devId'),html.Th('sun angle') ,html.Th('tracker angle')#, html.Th('motor status') ,
+        html.Thead(html.Tr([html.Th('Id'),html.Th('stamp'),html.Th('devId'),html.Th('sun angle') ,html.Th('tracker angle')#, html.Th('motor status') ,
          ]))]
     table_body=[
-        html.Tbody(html.Tr([html.Td(dev[1]),html.Td(dev[2]),html.Td(dev[3]),html.Td(dev[4])]))for dev in devices]
+        html.Tbody(html.Tr([html.Td(dev.id),html.Td(dev.stamp),html.Td(dev.devId),html.Td(dev.SPA),html.Td(dev.TA)]))for dev in rows]
     table=dbc.Table(table_header+table_body,bordered=True,striped=True,hover=True,style={"backgroundColor":"white"})
     return table
 dropdowns=html.Div([
@@ -235,18 +235,7 @@ def update_figure(selected_device):
 @app.callback(Output("live-update-text", "children"),
               [Input("live-update-text", "className")])
 def update_output_div(input_value):
-    #cursor.execute("SELECT * FROM data")
-    connection2 = sqlite3.connect('test.db')#,check_same_thread=False)
-    #df=pd.read_sql("select * from datatable",connection2)
-    cursor=connection2.cursor()
-    cursor.execute("SELECT * FROM datatable")
-
-    rows = cursor.fetchall()
-    print("rows=",rows)
-
-    for row in rows:
-        print("row=",row)
-    #devices = DeviceModel.query.all()
+    rows = User.query.all()
     return [html.Table(table(rows)
         )]
 
