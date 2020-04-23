@@ -40,7 +40,9 @@ server = flask.Flask(__name__)
 server.config['DEBUG'] = True
 
 connection = sqlite3.connect('sqlite.db',check_same_thread=False)
-server.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///sqlite.db')
+server.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+DATABASE_URL = 'sqlite:///sqlite.db'
+#server.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///sqlite.db')
 server.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 server.secret_key = 'smarttrak'
