@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import create_engine
 import dash
 import dash_bootstrap_components as dbc
 import dash_core_components as dcc
@@ -11,7 +12,6 @@ import time
 import pandas as pd
 import sqlite3
 import os
-from sqlalchemy import create_engine
 from datetime import datetime,timedelta
 FA ="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
 
@@ -22,6 +22,7 @@ server.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlit
 #server.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 server.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(server)
+db.init_app(server)
 db_URI = os.environ.get('DATABASE_URL', 'sqlite:///test.db')
 engine = create_engine(db_URI)
 
@@ -213,9 +214,8 @@ app.layout = html.Div([dropdowns,select,data1,graph,dcc.Location(id="url",refres
     Output('graph-with-slider', 'figure'),
     [Input('devices', 'value')])#,Input('interval-component', 'n_intervals')])
 def update_figure(selected_device):
-    connection1 = engine#connect('test.db')#,check_same_thread=False)
-    df=pd.read_sql("select * from datatable",connection1)
-
+    connec = engine  
+    df=pd.read_sql("select * from datatable",connec)
     filtered_df = df[df.devId == selected_device]
     print("filtered df=",filtered_df)
 
