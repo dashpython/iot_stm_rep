@@ -209,7 +209,32 @@ select=html.Div([
 
 
 app.layout = html.Div([dropdowns,select,data1,graph,dcc.Location(id="url",refresh=True)])
+@app.callback(
+        Output('display', 'children'),
+        [Input('devices1', 'value'),Input('options1', 'value'),Input('buttons1','n_clicks')])
+def output(val1,val2,n):
+    if n:
+        client.publish(pubtop,"{} READ:{}".format(val1,val2))
+        return "published for getting {}".format(val2)
+@app.callback(
+        Output('output', 'children'),
+        [Input('device', 'value'),Input('options', 'value'),Input('input2','value'),Input('write button', 'n_clicks')])
 
+def update_output(valueDEV,valueOP,value2,x):
+    print("dev=",valueDEV,"options=",valueOP,"value=",value2)
+    list1=["EAST","WEST","AUTOMODE","MANUALMODE","STOP"]
+    if ((valueOP in list1) and (x is not None)):
+        client.publish(pubtop,"{} WRITE:{}".format(valueDEV,valueOP))
+
+
+        print("executing")
+        return 'You have published "{} write {}"'.format(valueDEV,valueOP)
+
+    elif((value2 != None) and (x is not None)):
+        client.publish(pubtop,"{} WRITE:{}_{}".format(valueDEV,valueOP,value2))
+
+
+        return 'You have published "{} {} write {}"'.format(valueDEV,valueOP,value2)
 @app.callback(
     Output('graph-with-slider', 'figure'),
     [Input('devices', 'value')])#,Input('interval-component', 'n_intervals')])
