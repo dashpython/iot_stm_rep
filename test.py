@@ -11,6 +11,7 @@ import paho.mqtt.client as mqtt
 import time
 import pandas as pd
 import sqlite3
+from six.moves.urllib.parse import quote
 import os
 from datetime import datetime,timedelta
 FA ="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
@@ -116,6 +117,16 @@ data1= html.Div([
         #html.H4('Substation Data Live Feed'),
         html.Table(id="live-update-text"),],style={"overflowX":"scroll"})
 
+download = html.Div(
+        [html.A(dbc.Button(
+            "Download CSV",
+            id='download-link',color="primary"),
+            style={"padding": "1000px"},
+
+            download="rawtable.csv",
+            href="",target="_blank")
+            ])
+
 app = dash.Dash(__name__,server=server,external_stylesheets=[dbc.themes.BOOTSTRAP, FA])
 
 app.config['suppress_callback_exceptions']=True
@@ -208,7 +219,17 @@ select=html.Div([
 
 
 
-app.layout = html.Div([dropdowns,select,data1,graph,dcc.Location(id="url",refresh=True)])
+app.layout = html.Div([dropdowns,select,download,data1,graph,dcc.Location(id="url",refresh=True)])
+
+@app.callback(Output("download-link", "href"),
+              [Input("live-update-text", "className")])
+def update_download_link(input_value):
+    connection1 = engine
+    df=pd.read_sql("select * from datatable",connection1)
+    cv = df.to_csv(index=False, encoding='utf-8')
+    cv = "data:text/csv;charset=utf-8,%EF%BB%BF" + quote(cv)
+    return cv
+
 @app.callback(
         Output('display', 'children'),
         [Input('devices1', 'value'),Input('options1', 'value'),Input('buttons1','n_clicks')])
