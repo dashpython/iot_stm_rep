@@ -1,5 +1,4 @@
 from flask import Flask
-from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 import dash
 import dash_bootstrap_components as dbc
@@ -21,10 +20,7 @@ server.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlit
 
 #server.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 server.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-api = Api(server)
-
 db = SQLAlchemy(server)
-db.init_app(server)
 
 
 class User(db.Model):
@@ -92,7 +88,7 @@ client.loop()
 
 graph=html.Div([
     dcc.Dropdown(
-        id='rows',
+        id='devices',
         options=[
             {'label': 'R1', 'value': 'R1 '},
             {'label': 'G2', 'value': 'G2 '},
@@ -122,10 +118,10 @@ app.config['suppress_callback_exceptions']=True
 
 def table(rows):
     #global reading
-    print("table rows=",rows)
+    
     #reading=reading+1
     table_header=[
-        html.Thead(html.Tr([html.Th('Id'),html.Th('stamp'),html.Th('devId'),html.Th('SunAngle') ,html.Th('Tracker Angle')#, html.Th('motor status') ,
+        html.Thead(html.Tr([html.Th('Id'),html.Th('stamp'),html.Th('devId'),html.Th('sun angle') ,html.Th('tracker angle')#, html.Th('motor status') ,
          ]))]
     table_body=[
         html.Tbody(html.Tr([html.Td(dev.id),html.Td(dev.stamp),html.Td(dev.devId),html.Td(dev.SPA),html.Td(dev.TA)]))for dev in rows]
@@ -200,44 +196,19 @@ select=html.Div([
         ],
         value='',style={"width":"auto"}
     ),
-  dcc.Input(id="input2", type="text"),
-    html.Div(id="output"),
+  dcc.Input(id="input2", type="text"),# placeholder="", debounce=True),
+        html.Div(id="output"),
         dbc.Button("Write", id="write button"),
-        ],
+        ],#, className="mr-2")
 )
+
+
 
 app.layout = html.Div([dropdowns,select,data1,graph,dcc.Location(id="url",refresh=True)])
 
 @app.callback(
-        Output('display', 'children'),
-        [Input('devices1', 'value'),Input('options1', 'value'),Input('buttons1','n_clicks')])
-def output(val1,val2,n):
-    if n:
-        client.publish(pubtop,"{} READ:{}".format(val1,val2))
-        return "published for getting {}".format(val2)
-@app.callback(
-        Output('output', 'children'),
-        [Input('device', 'value'),Input('options', 'value'),Input('input2','value'),Input('write button', 'n_clicks')])
-
-def update_output(valueDEV,valueOP,value2,x):
-    print("dev=",valueDEV,"options=",valueOP,"value=",value2)
-    list1=["EAST","WEST","AUTOMODE","MANUALMODE","STOP"]
-    if ((valueOP in list1) and (x is not None)):
-        client.publish(pubtop,"{} WRITE:{}".format(valueDEV,valueOP))
-
-
-        print("executing")
-        return 'You have published "{} write {}"'.format(valueDEV,valueOP)
-
-    elif((value2 != None) and (x is not None)):
-        client.publish(pubtop,"{} WRITE:{}_{}".format(valueDEV,valueOP,value2))
-
-
-        return 'You have published "{} {} write {}"'.format(valueDEV,valueOP,value2)
-
-@app.callback(
     Output('graph-with-slider', 'figure'),
-    [Input('rows', 'value')])#,Input('interval-component', 'n_intervals')])
+    [Input('devices', 'value')])#,Input('interval-component', 'n_intervals')])
 def update_figure(selected_device):
     connection1 = sqlite3.connect('test.db')#,check_same_thread=False)
     df=pd.read_sql("select * from datatable",connection1)
@@ -264,9 +235,7 @@ def update_figure(selected_device):
 @app.callback(Output("live-update-text", "children"),
               [Input("live-update-text", "className")])
 def update_output_div(input_value):
-    
     rows = User.query.all()
-    
     return [html.Table(table(rows)
         )]
 
