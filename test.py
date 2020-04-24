@@ -92,7 +92,7 @@ client.loop()
 
 graph=html.Div([
     dcc.Dropdown(
-        id='devices',
+        id='rows',
         options=[
             {'label': 'R1', 'value': 'R1 '},
             {'label': 'G2', 'value': 'G2 '},
@@ -237,7 +237,7 @@ def update_output(valueDEV,valueOP,value2,x):
 
 @app.callback(
     Output('graph-with-slider', 'figure'),
-    [Input('devices', 'value')])#,Input('interval-component', 'n_intervals')])
+    [Input('rows', 'value')])#,Input('interval-component', 'n_intervals')])
 def update_figure(selected_device):
     connection1 = sqlite3.connect('test.db')#,check_same_thread=False)
     df=pd.read_sql("select * from datatable",connection1)
