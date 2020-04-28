@@ -173,7 +173,7 @@ page_2_graph = dbc.Container([
 
   
 
-page_1_table = dbc.Container(html.Div([html.H3('Table Data'),
+page_1_table = dbc.Jumbotron([dbc.Container(html.Div([html.H3('Table Data'),
         dcc.DatePickerRange(
             id='my-date-picker-range2',
             min_date_allowed=datetime(1995, 8, 5,1,1,1,1),
@@ -189,7 +189,8 @@ page_1_table = dbc.Container(html.Div([html.H3('Table Data'),
             href="",target="_blank"),
             dcc.Link(href='/page-2'),
             html.Div([html.Table(id="live-update-text")],style={'maxHeight':"380px","overflowY":"scroll"}),
-]),style={"border":"2px black solid","padding":"0 rem"})
+]),style={"border":"2px black solid","padding":"0 rem"}),])
+
 
 
 
