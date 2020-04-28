@@ -118,7 +118,7 @@ navbar = dbc.Navbar(
             dbc.Row(
                 [
                     dbc.Col(html.Img(src=PLOTLY_LOGO, height="50px",width="auto")),
-                    dbc.Col(dbc.NavbarBrand( html.H2("TRACKER DASHBOARD",style={"align":"center",'fontSize':'50px','align':'center','font-style': 'Georgia', 'font-weight': 'bold','color':'navy-blue'}))),
+                    dbc.Col(dbc.NavbarBrand( html.H2("TRACKER DASHBOARD",style={"align":"center",'padding-right':'20rem','fontSize':'50px','align':'center','font-style': 'Georgia', 'font-weight': 'bold','color':'navy-blue'}))),
 
                 ],),),],color="#D3C489",)
 
@@ -142,7 +142,8 @@ app.layout = html.Div([navbar,content,
 ],value='/page-1')]),
         ],style={'backgroundColor':'#00C0C0'})    
 
-page_2_graph = dbc.Container([
+page_2_graph = dbc.Jumbotron([
+    dbc.Container([
         dbc.Row([
             dbc.Col(
                 html.Div([
@@ -168,12 +169,11 @@ page_2_graph = dbc.Container([
     ]),
  # ],style={'maxHeight':"400px","overflowX":"scroll","overflowY":"scroll",'width':'600px'})],style={"border":"2px black solid",'maxHeight':'500px','width':'600px','padding': '0px 20px 20px 20px'}),])
   
-  ], style={"border":"2px black solid",'maxHeight':'500px','width':'600px','padding': '20px 20px 20px 20px'})
-    
+  ], style={"border":"2px black solid"}),
+  ])
 
-  
-
-page_1_table = dbc.Jumbotron([dbc.Container(html.Div([html.H3('Table Data'),
+page_1_table = dbc.Jumbotron([
+    dbc.Container(html.Div([html.H3('Table Data'),
         dcc.DatePickerRange(
             id='my-date-picker-range2',
             min_date_allowed=datetime(1995, 8, 5,1,1,1,1),
@@ -188,10 +188,8 @@ page_1_table = dbc.Jumbotron([dbc.Container(html.Div([html.H3('Table Data'),
             download="data.csv",
             href="",target="_blank"),
             dcc.Link(href='/page-2'),
-            html.Div([html.Table(id="live-update-text")],style={'maxHeight':"380px","overflowY":"scroll"}),
+            html.Div([html.Table(id="live-update-text")],style={'maxHeight':"330px","overflowY":"scroll"}),
 ]),style={"border":"2px black solid","padding":"0 rem"}),])
-
-
 
 
          
