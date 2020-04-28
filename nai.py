@@ -156,14 +156,14 @@ page_2_graph = dbc.Jumbotron([
                 start_date=datetime.now()-timedelta(days=1)),
             html.Div(id='output-container-date-picker-range'),
             html.Div(id='dd-output-container'),
-            dcc.Graph(id='graph-with-slider',style={"width":"auto","height":"300px"}),
-            dcc.Interval(
+            dcc.Graph(id='graph-with-slider',style={"width":"500px","height":"300px"}),
+            dcc.Interval(:wq
             id='interval-component',
             interval=1*1000, # in milliseconds
             n_intervals=0
         ),dcc.Link(href='/page-1'),
 ],style={'maxHeight':"470px","overflowY":"scroll"}),],style={"border":"2px black solid",'maxHeight':'500px','width':'600px','padding': '0px 20px 20px 20px'}),
-  ])
+  ],fluid=True)
 
 page_1_table = dbc.Jumbotron([
     dbc.Container(html.Div([html.H3('Table Data'),
@@ -182,7 +182,7 @@ page_1_table = dbc.Jumbotron([
             href="",target="_blank"),
             dcc.Link(href='/page-2'),
             html.Div([html.Table(id="live-update-text")],style={'maxHeight':"330px","overflowY":"scroll"}),
-]),style={"border":"2px black solid","padding":"0 rem"}),])
+]),style={"border":"2px black solid","padding":"0 rem"}),],fluid=True)
 
 
          
