@@ -175,8 +175,8 @@ page_2_graph =dbc.Jumbotron([
             n_intervals=0
         ),
     dcc.Link(href='/page-1'),
-    ],style={'maxHeight':"400px","overflowX":"scroll","overflowY":"scroll",'width':'600px'}),],style={"border":"2px black solid",'maxHeight':'500px','width':'600px','padding': '0px 0px 20px 0px'}),
-    ],fluid=True)
+    ],style={'maxHeight':"400px","overflowX":"scroll","overflowY":"scroll",'width':'600px'}),],style={"border":"2px black solid",'maxHeight':'500px','width':'600px','padding': '20px 20px 20px 20px'}),
+    ])
 
 
 page_1_table = dbc.Jumbotron([
