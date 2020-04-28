@@ -188,8 +188,9 @@ page_1_table = dbc.Container(html.Div([html.H3('Table Data'),
             download="data.csv",
             href="",target="_blank"),
             dcc.Link(href='/page-2'),
-            html.Div([html.Table(id="live-update-text")],style={'maxHeight':"330px","overflowY":"scroll"}),
+            html.Div([html.Table(id="live-update-text")],style={'maxHeight':"380px","overflowY":"scroll"}),
 ]),style={"border":"2px black solid","padding":"0 rem"})
+
 
 
          
