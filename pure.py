@@ -118,7 +118,7 @@ navbar = dbc.Navbar(
             dbc.Row(
                 [
                     dbc.Col(html.Img(src=PLOTLY_LOGO, height="50px",width="auto")),
-                    dbc.Col(dbc.NavbarBrand( html.H2("TRACKER DASHBOARD",style={"align":"center",'padding-right':'20rem','fontSize':'50px','align':'center','font-style': 'Georgia', 'font-weight': 'bold','color':'navy-blue'}))),
+                    dbc.Col(dbc.NavbarBrand( html.H2("TRACKER DASHBOARD",style={"align":"center",'fontSize':'50px','align':'center','font-style': 'Georgia', 'font-weight': 'bold','color':'navy-blue'}))),
 
                 ],),),],color="#D3C489",)
 
