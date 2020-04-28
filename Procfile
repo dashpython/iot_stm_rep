@@ -1,1 +1,1 @@
-web: gunicorn nai:server
+web: gunicorn pure:server
