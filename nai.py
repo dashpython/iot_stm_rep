@@ -1,4 +1,3 @@
-import io
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
@@ -21,7 +20,6 @@ from six.moves.urllib.parse import quote
 from sqlalchemy import create_engine
 from datetime import datetime,timedelta
 import unicodedata
-from flask import send_file
 
 FA ="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
 
@@ -119,10 +117,10 @@ navbar = dbc.Navbar(
             # Use row and col to control vertical alignment of logo / brand
             dbc.Row(
                 [
-                    dbc.Col(html.Img(src=PLOTLY_LOGO, height="50px")),
-                    dbc.Col(dbc.NavbarBrand( html.H2("TRACKER DASHBOARD",style={"align":"center",'fontSize':'40px','align':'center','font-style': 'Georgia', 'font-weight': 'bold','color':'#610572'}))),
+                    dbc.Col(html.Img(src=PLOTLY_LOGO, height="50px",width="auto")),
+                    dbc.Col(dbc.NavbarBrand( html.H2("TRACKER DASHBOARD",style={"align":"center",'padding-right':'20rem','fontSize':'50px','align':'center','font-style': 'Georgia', 'font-weight': 'bold','color':'navy-blue'}))),
 
-                ],),),],color="#C3C489",)
+                ],),),],color="#D3C489",)
 
 
 content = html.Div(id="page-content")
@@ -136,45 +134,43 @@ app.layout = html.Div([navbar,content,
     dcc.Location(id='url', refresh=False),
         html.Div([         
            dcc.Tabs(id="tabs", children=[
-                dcc.Tab(label='Graph', value='/page-1',style={'backgroundColor':'#B2A29E'}),
-                dcc.Tab(label='Table', value='/page-2',style={'backgroundColor':'#B2A29E'}),
-                dcc.Tab(label='Read', value='/page-3',style={'backgroundColor':'#B2A29E'}),
-                dcc.Tab(label='Write', value='/page-4',style={'backgroundColor':'#B2A29E'}),
+                dcc.Tab(label='Graph', value='/page-1',style={'backgroundColor':'purple'}),
+                #dcc.Tab(label='Graph', value='/page-1',style={'backgroundColor':'#B2A29E'}),
+                dcc.Tab(label='Table',  value='/page-2',style={'backgroundColor':'green', 'font-weight': 'bold'}),
+                dcc.Tab(label='Read',  value='/page-3',style={'backgroundColor':'brown'}),
+                dcc.Tab(label='Write', value='/page-4',style={'backgroundColor':'blue'}),
 ],value='/page-1')]),
-        ],style={'backgroundColor':'#C0C0C0'})    
+        ],style={'backgroundColor':'#00C0C0'})    
 
-page_2_graph =dbc.Jumbotron([
-            dbc.Row([
+page_2_graph = dbc.Jumbotron([
+    dbc.Container([
+        dbc.Row([
+            dbc.Col(
                 html.Div([
-    html.H3('Graph'),
-
-    dcc.Dropdown(
-        id='devices',
-        options=[
-            {'label': 'R1', 'value': 'R1 '},
-            {'label': 'G2', 'value': 'G2 '},
-            {'label': 'R2', 'value': 'R2 '}
-        ],
-        value='R1 ', style={"width":"auto"}),
-    dcc.DatePickerRange(
-        id='my-date-picker-range',
-        min_date_allowed=datetime(1995, 8, 5,1,1,1,1),
-        max_date_allowed=datetime.now(),
-        initial_visible_month=datetime.now(),
-        end_date=datetime.now(),
-        start_date=datetime.now()-timedelta(days=1)),
-    html.Div(id='output-container-date-picker-range'),
-    html.Div(id='dd-output-container'),
-    dcc.Graph(id='graph-with-slider'),
-    dcc.Interval(
+                    html.H3('Graph'),
+                    dcc.Dropdown(id='devices',
+                options=[{'label': 'R1', 'value': 'R1 '},{'label': 'G2', 'value': 'G2 '},{'label': 'R2', 'value': 'R2 '}],
+                value='R1 ', style={"width":"auto","height":"auto"}),
+            dcc.DatePickerRange(id='my-date-picker-range',
+                min_date_allowed=datetime(1995, 8, 5,1,1,1,1),
+                max_date_allowed=datetime.now(),
+                initial_visible_month=datetime.now(),
+                end_date=datetime.now(),
+                start_date=datetime.now()-timedelta(days=1)),
+            html.Div(id='output-container-date-picker-range'),
+            html.Div(id='dd-output-container'),
+            dcc.Graph(id='graph-with-slider',style={"width":"auto","height":"300px"}),
+            dcc.Interval(
             id='interval-component',
-            interval=1*1000,
+            interval=1*1000, # in milliseconds
             n_intervals=0
-        ),
-    dcc.Link(href='/page-1'),
-    ],style={'maxHeight':"400px","overflowX":"scroll","overflowY":"scroll",'width':'600px'}),],style={"border":"2px black solid",'maxHeight':'500px','width':'600px','padding': '0px 20px 20px 20px'}),
-    ])
-
+        ),dcc.Link(href='/page-1'),
+],style={'maxHeight':"470px","overflowY":"scroll"})),
+    ]),
+ # ],style={'maxHeight':"400px","overflowX":"scroll","overflowY":"scroll",'width':'600px'})],style={"border":"2px black solid",'maxHeight':'500px','width':'600px','padding': '0px 20px 20px 20px'}),])
+  
+  ], style={"border":"2px black solid"}),
+  ])
 
 page_1_table = dbc.Jumbotron([
     dbc.Container(html.Div([html.H3('Table Data'),
@@ -192,10 +188,11 @@ page_1_table = dbc.Jumbotron([
             download="data.csv",
             href="",target="_blank"),
             dcc.Link(href='/page-2'),
-            html.Div([html.Table(id="live-update-text")],style={'maxHeight':"380px","overflowY":"scroll"}),
+            html.Div([html.Table(id="live-update-text")],style={'maxHeight':"330px","overflowY":"scroll"}),
 ]),style={"border":"2px black solid","padding":"0 rem"}),])
 
-   
+
+         
 
 page_3_read = html.Div([
     html.H4('You can read the data using these dropdown buttons'),
@@ -231,7 +228,7 @@ page_3_read = html.Div([
 
 html.Div(id='display'),
      dcc.Link(href='/page-3'),
-html.Div(messagelist)],style={'minHeight':"500px","overflowY":"scroll"})
+html.Div(messagelist)],style={'minHeight':"500px","overflowY":"scroll",'backgroundColor':'info'})
 
 page_4_write=html.Div([
     html.H4('Using these you can write the commands for setting the values in the device'),
@@ -244,6 +241,7 @@ page_4_write=html.Div([
         ],
         value='',style={"width":"auto"}
     ),
+    #html.H4(''),
     dcc.Dropdown(
         id='options',
         options=[
@@ -251,7 +249,7 @@ page_4_write=html.Div([
             {'label': 'LONGITUDE', 'value': 'LONGITUDE'},
             {'label': 'SEC', 'value': 'SEC'},
             {'label': 'MIN', 'value': 'MIN'},
-            {'label': 'HOUR', 'value': 'HR'},
+                        {'label': 'HOUR', 'value': 'HR'},
             {'label': 'DATE', 'value': 'DATE'},
             {'label': 'MONTH', 'value': 'MONTH'},
             {'label': 'YEAR', 'value': 'YEAR'},
@@ -270,17 +268,22 @@ page_4_write=html.Div([
         dbc.Button("Write", id="write button"),
             dcc.Link(href='/page-4'),
 
-        ],style={'minHeight':"500px"}
+        ],style={'minHeight':"500px",'backgroundColor':'white'}#,"overflowY":"scroll"}
 )
 def conv(x):
     val=unicodedata.normalize('NFKD', x).encode('ascii','ignore')
     print("val=",val)
     return val
 def table(rows):
-    
+    #unicodedata.normalize('NFKD', rows).encode('ascii','ignore')
     table_header=[
-        html.Thead(html.Tr([html.Th('Id'),html.Th('stamp'),html.Th('devId'),html.Th('sun angle') ,html.Th('tracker angle')]))]
-    table_body=[html.Tbody(html.Tr([html.Td(dev[0]),html.Td(dev[1]),html.Td(dev[2]),html.Td(dev[3]),html.Td(dev[4])]))for dev in rows]
+        html.Thead(html.Tr([html.Th('Id'),html.Th('stamp'),html.Th('devId'),html.Th('sun angle') ,html.Th('tracker angle')#, html.Th('motor status') ,
+         ]))]
+    table_body=[
+        #html.Tbody(html.Tr([html.Td(dev['id']),html.Td(dev['stamp']),html.Td(dev['devId']),html.Td(dev['SPA']),html.Td(dev['TA'])]))for dev in rows]
+        html.Tbody(html.Tr([html.Td(dev[0]),html.Td(dev[1]),html.Td(dev[2]),html.Td(dev[3]),html.Td(dev[4])]))for dev in rows]
+        #html.Tbody(html.Tr([html.Td(conv(dev.id)),html.Td(conv(dev.stamp)),html.Td(conv(dev.devId)),html.Td(conv(dev.SPA)),html.Td(conv(dev.TA))]))for dev in rows]
+        #html.Tbody(html.Tr([html.Td(dev.id),html.Td(dev.stamp),html.Td(dev.devId),html.Td(dev.SPA),html.Td(dev.TA)]))for dev in rows]
     table=dbc.Table(table_header+table_body,bordered=True,striped=True,hover=True,style={"backgroundColor":"white"})
     return table
 
@@ -314,79 +317,83 @@ def update_output(valueDEV,valueOP,value2,x):
         return 'You have published "{} {} write {}"'.format(valueDEV,valueOP,value2)
 @app.callback(
     Output('graph-with-slider', 'figure'),
-    [Input('devices', 'value'),
-        Input('my-date-picker-range', 'start_date'),
-        Input('my-date-picker-range', 'end_date')])
+    [Input('devices', 'value'),Input('my-date-picker-range', 'start_date'),Input('my-date-picker-range', 'end_date')])
 
 def update_figure(selected_device,start,end):
     connection1 = engine#.connnect()
+    print("start=",start,"end=",end,"dt.now=",datetime.now())
     df=pd.read_sql("select * from datatable",connection1)
-    filtered_d = df[df.devId == selected_device]
-    filtered_df = filtered_d.loc[(filtered_d['stamp'] > start) & (filtered_d['stamp'] <= end)]
-    return {'data': [{'x': filtered_df.stamp, 'y':filtered_df.SPA, 'name': 'SPA'},
-        {'x': filtered_df.stamp, 'y':filtered_df.TA,'name': 'TA'}, ],
-        'layout': {'title': 'SPA and TA'}}
+    filtered_d = df[df.devId == selected_device]# and ([df.stamp == i] for i in (start,end,timedelta(microseconds=1)))]
+    filtered_df = filtered_d.loc[(filtered_d['stamp'] > start) & (filtered_d['stamp'] <= end)]# and ([df.stamp == i] for i in (start,end,timedelta(microseconds=1)))]
+    #filtered_df= filtered_d[[str(i) in str([filtered_d.stamp]for stamp in )] for i in (start,end,timedelta(days=1)]
+    print("filtered df=",filtered_df)
 
-@app.callback(Output("download-link", "href"),
-              [Input("live-update-text", "className")])
-def update_download_link(input_value):
-    connection1 = engine
-    df=pd.read_sql("select * from datatable",connection1)
-    #filtered_df = df.loc[(df['stamp'] > start) & (df['stamp'] <= end)]
-    #filtered_df=filtered_df.values.tolist()
-    str_io = io.BytesIO()
-    df.to_csv(str_io)
-    mem = io.BytesIO()
-    mem.write(str_io.getvalue().encode('utf-8'))
-    mem.seek(0)
-    str_io.close()
-    return flask.send_file(mem,
-                       mimetype='text/csv;charset=utf-8',
-                       attachment_filename='data.csv',
-                       as_attachment=True)
-
-
-
+    return {
+                                'data': [
+                                    {'x': filtered_df.stamp, 'y':filtered_df.SPA
+                                    #.where(df.devname=='dev_01')
+                                    , 'name': 'SPA'},
+                                    {'x': filtered_df.stamp, 'y':filtered_df.TA
+                                                                  , 'name': 'TA'}, ],
+            'layout': {
+                'title': 'SPA and TA'
+                }}
 
 
 @app.callback(Output("live-update-text", "children"),
-              [Input("live-update-text", "className"),
-                  Input('my-date-picker-range2', 'start_date'),
-                  Input('my-date-picker-range2', 'end_date')])
+              [Input("live-update-text", "className"),Input('my-date-picker-range2', 'start_date'),Input('my-date-picker-range2', 'end_date')])
 def update_output_div(input_value,start,end):
     connection1 = engine#.connnect()
+    print("start=",start,"end=",end,"dt.now=",datetime.now())
     df=pd.read_sql("select * from datatable",connection1)
-    print("df=",df)
-
+    #filtered_d = df[df.devId == selected_device]# and ([df.stamp == i] for i in (start,end,timedelta(microseconds=1)))]
     filtered_df = df.loc[(df['stamp'] > start) & (df['stamp'] <= end)]
+    #rows = User.query.all()
+    print("table filtereddf=",filtered_df.stamp)
+    print("table filtereddf=",filtered_df.all)
+#    for 
+#    filterdf[i]=filtered_df[i].astype(str).str.split(',')
+    #return [html.Table(table(rows)
+    #filtered_df=filtered_df.convert_dtypes(self: ~FrameOrSeries, infer_objects: bool = True, convert_string: bool = True, convert_integer: bool = True, convert_boolean: bool = True)
+    #filtered_df=filtered_df.convert_dtypes()
+#    filtered_df=filtered_df.all
     filtered_df=filtered_df.values.tolist()
-#    print("filtered_df=",filtered_df)
-
     return [html.Table(table(filtered_df)
         )]
 
 
+#@app.callback(Output("download-link", "url"),
+#@app.callback(Output("download-link", "url"),
+#              [Input("download-link", "className")])
+def update_download_link(input_value):
+    connection1 = engine
+    df=pd.read_sql("select * from datatable",connection1)
+    return [html.Table(table(filtered_df)
+        )]
 
-#@app.server.route('/download-csv/')
+@app.callback(Output("download-link", "data"),
+              [Input("downoad-link", "n_clicks"),Input('my-date-picker-range2', 'start_date'),Input('my-date-picker-range2', 'end_date')])
+def update_download_link(input_value,start,end):
+  if n_clicks:  
+    connection1 = engine
+    #df=pd.read_sql_table("select * from datatable",connection1)
+    df=pd.read_sql_table("datatable",connection1)
+    filtered_df = df.loc[(df['stamp'] > start) & (df['stamp'] <= end)]
 
+    cv = filtered_df.to_csv("data.csv",index=False, encoding='utf-8')
+#    cv = "data:text/csv;charset=utf-8,%EF%BB%BF" + quote(cv)
+    return cv
 
     
-    
-    
-"""str_io = io.BytesIO()
-    filtered_df.to_csv(str_io)
-    mem = io.BytesIO()
-    mem.write(str_io.getvalue().encode('utf-8'))
-    mem.seek(0)
-    str_io.close()
-    return flask.send_file(mem,
-                       mimetype='text/csv;charset=utf-8',
-                       attachment_filename='data.csv',
-                       as_attachment=True)"""
-
-"""cv = df.to_csv(index=False, encoding='utf-8')
-    cv = "data:text/csv;charset=utf-8,%EF%BB%BF" + quote(cv)
-    return cv"""
+#@app.callback(Output("download-link", "url"),
+#@app.callback(Output("download-link", "url"),
+#              [Input("downoad-link", "className")])
+def update_download_link(input_value):
+    connection1 = engine
+    df=pd.read_sql("select * from datatable",connection1)
+    cv = df.to_csv("data.csv",index=False)#, encoding='utf-8')
+    #cv = "data:text/csv;charset=utf-8,%EF%BB%BF" + quote(cv)
+    return cv
 
 @app.callback(dash.dependencies.Output('url', 'pathname'),
               [dash.dependencies.Input('tabs', 'value')])
@@ -405,8 +412,17 @@ def display_page(pathname):
         return page_3_read
     elif pathname =='/page-4':
         return page_4_write
+    #else:
+     #   pathname == '/page-1'
+      #  return page_2_graph
 
+        
+
+#@app.callback(dash.dependencies.Output('url', 'pathname'),
+#              [dash.dependencies.Input('tabs', 'value')])
+def tab_updates_url(value):
+    return value
 
 
 if __name__ == '__main__':
-    app.run_server(debug=True,threaded=False, use_reloader=False)
+    app.run_server(debug=True,threaded=False)
