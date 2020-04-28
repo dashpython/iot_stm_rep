@@ -118,7 +118,7 @@ navbar = dbc.Navbar(
             dbc.Row(
                 [
                     dbc.Col(html.Img(src=PLOTLY_LOGO, height="50px",width="auto")),
-                    dbc.Col(dbc.NavbarBrand( html.H2("TRACKER DASHBOARD",style={"align":"center",'padding-right':'20rem','fontSize':'50px','align':'center','font-style': 'Georgia', 'font-weight': 'bold','color':'navy-blue'}))),
+                    dbc.Col(dbc.NavbarBrand( html.H2("TRACKER DASHBOARD",style={"align":"center",'fontSize':'50px','align':'center','font-style': 'Georgia', 'font-weight': 'bold','color':'navy-blue'}))),
 
                 ],),),],color="#D3C489",)
 
@@ -135,7 +135,6 @@ app.layout = html.Div([navbar,content,
         html.Div([         
            dcc.Tabs(id="tabs", children=[
                 dcc.Tab(label='Graph', value='/page-1',style={'backgroundColor':'purple'}),
-                #dcc.Tab(label='Graph', value='/page-1',style={'backgroundColor':'#B2A29E'}),
                 dcc.Tab(label='Table',  value='/page-2',style={'backgroundColor':'green', 'font-weight': 'bold'}),
                 dcc.Tab(label='Read',  value='/page-3',style={'backgroundColor':'brown'}),
                 dcc.Tab(label='Write', value='/page-4',style={'backgroundColor':'blue'}),
@@ -143,10 +142,8 @@ app.layout = html.Div([navbar,content,
         ],style={'backgroundColor':'#00C0C0'})    
 
 page_2_graph = dbc.Jumbotron([
-    dbc.Container([
-        dbc.Row([
-            dbc.Col(
-                html.Div([
+            dbc.Row([
+                    html.Div([
                     html.H3('Graph'),
                     dcc.Dropdown(id='devices',
                 options=[{'label': 'R1', 'value': 'R1 '},{'label': 'G2', 'value': 'G2 '},{'label': 'R2', 'value': 'R2 '}],
@@ -165,11 +162,7 @@ page_2_graph = dbc.Jumbotron([
             interval=1*1000, # in milliseconds
             n_intervals=0
         ),dcc.Link(href='/page-1'),
-],style={'maxHeight':"470px","overflowY":"scroll"})),
-    ]),
- # ],style={'maxHeight':"400px","overflowX":"scroll","overflowY":"scroll",'width':'600px'})],style={"border":"2px black solid",'maxHeight':'500px','width':'600px','padding': '0px 20px 20px 20px'}),])
-  
-  ], style={"border":"2px black solid"}),
+],style={'maxHeight':"470px","overflowY":"scroll"}),],style={"border":"2px black solid"}),
   ])
 
 page_1_table = dbc.Jumbotron([
