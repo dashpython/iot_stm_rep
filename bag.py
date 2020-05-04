@@ -424,6 +424,8 @@ page_2_graph =html.Div([dbc.Button(html.A("Home", href="/page-2"),outline=True,c
     dbc.Button(html.A("Status", href="/"),outline=True,className="mr-4"),
     dbc.Button(html.A("Location SetUp", href="/page-4"),outline=True,className="mr-4"), 
     dbc.Button(html.A("Control",href="/"),outline=True,className="mr-4"),
+    dbc.Button(html.A("Tracker Table", href="/page-1"),outline=True,className="mr-4"),
+
     dbc.Jumbotron([
         dbc.Container([
         dbc.Row([
